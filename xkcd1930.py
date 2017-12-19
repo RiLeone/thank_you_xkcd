@@ -26,7 +26,7 @@ class xkcd1930:
         block_main_parts = ["the ",
                             "daylight ",
                             "leap ",
-                            "easter ",
+                            "Easter ",
                             "Toyota Truck Month ",
                             "Shark Week "]
 
@@ -99,7 +99,7 @@ class xkcd1930:
 
     def get_second_block(self):
         block_main_parts = ["happens ",
-                            "drifts out of sync ",
+                            "drifts out of sync with the ",
                             "might "]
 
         random_index = random.randrange(len(block_main_parts))
@@ -116,7 +116,7 @@ class xkcd1930:
 
             self.statement += "every year "
 
-        if random_index == 1:
+        elif random_index == 1:
             up_or_down = random.randrange(5)
             if up_or_down == 0:
                 self.statement += "sun "
