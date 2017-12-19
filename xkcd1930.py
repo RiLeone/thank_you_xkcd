@@ -152,8 +152,8 @@ class xkcd1930:
         self.statement += "because of "
 
         block_main_parts = ["time zone legislation in ",
-                            "a decree by the Pope in the 1500s ",
-                            "magnetic field reversal ",
+                            "a decree by the Pope in the 1500s",
+                            "magnetic field reversal",
                             "an arbitrary decision by "]
 
         random_index = random.randrange(len(block_main_parts))
@@ -163,14 +163,8 @@ class xkcd1930:
             up_or_down = random.randrange(3)
             if up_or_down == 0:
                 self.statement += "Indiana"
-                self.statement += "Benjamin Franklin"
-            elif up_or_down == 1:
-                self.statement += "Isaac Newton"
             elif up_or_down == 1:
                 self.statement += "Arizona"
-                self.statement += "Benjamin Franklin"
-            elif up_or_down == 1:
-                self.statement += "Isaac Newton"
             elif up_or_down == 2:
                 self.statement += "Russia"
 
