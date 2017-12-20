@@ -10,7 +10,7 @@
 
     MIT License
 
-    Copyright (c) 2017 RiLeone
+    Copyright (c) 2017 Alessandro Schaer
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
