@@ -9,10 +9,29 @@
     Calendar facts. Pretty naive implementation.
 """
 import random
+import textwrap as textwrap
+import matplotlib.pyplot as pltlib
 
 class xkcd1930:
     def __init__(self):
         self.statement = ""
+        pltlib.xkcd()
+
+    def generate_image(self):
+        self.generate_statement()
+        print("")
+
+        wrapped_string = textwrap.wrap(self.statement, 60)
+
+        fig_height = 1
+        fig = pltlib.figure(figsize=(9,fig_height))
+        for ii,line in enumerate(wrapped_string):
+            print(line)
+            pltlib.text(0, 0.9 - ii * fig_height / 3, line)
+
+        pltlib.axis('off')
+        pltlib.savefig("xkcd1930_calendar-facts_statement.png")
+        pltlib.show()
 
     def generate_statement(self):
         self.statement = "Did you know that "
@@ -256,3 +275,5 @@ if __name__ == "__main__":
     for ii in range(10):
         tester.generate_statement()
     print("\n")
+
+    tester.generate_image()
