@@ -10,7 +10,11 @@
 
     MIT License
 
+<<<<<<< HEAD
     Copyright (c) 2017 Alessandro Schaer
+=======
+    Copyright (c) 2017 RiLeone
+>>>>>>> e91b2a84e37c80b67a1e3d579927959c3bca526f
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
