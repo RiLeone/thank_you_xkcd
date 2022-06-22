@@ -87,14 +87,22 @@ class Xkcd1930:
 
         logger.info(f"Generating image for statement: '{self.statement}'")
         wrapped_string = textwrap.wrap(self.statement, CFG["LINE_CHAR_LENGTH"])
+        N_LINES = len(wrapped_string)
 
-        fig = pltlib.figure(figsize = CFG["FIG_SIZE"])
-        fig_height = CFG["FIG_SIZE"][1]
+        fig, axs = pltlib.subplots(figsize = CFG["FIG_SIZE"])
+        LINE_SPACING = 1.
+        TEXT_START_Y = 1.
         for ii, line in enumerate(wrapped_string):
             logger.debug(line)
-            pltlib.text(0, 0.9 - ii * fig_height / 3, line)
+            axs.text(0, TEXT_START_Y - ii * LINE_SPACING, line, va = "top")
 
-        pltlib.axis('off')
+        axs.set_ylim(
+            (
+                TEXT_START_Y - (N_LINES + 1) * LINE_SPACING,
+                TEXT_START_Y + LINE_SPACING,
+            )
+        )
+        axs.axis("off")
         pltlib.savefig(
             "/".join([CFG["IMG_DIR"], "xkcd1930_calendar-facts_statement"])
         )
@@ -243,7 +251,7 @@ class Xkcd1930:
         """Append the fourth block of the sentence to the current statement"""
         self.statement += "Apparently "
 
-        block_main_parts = (
+        FOURTH_BLOCK_POOL = (
             "it causes a predictable increase in car accidents.",
             "that's why we have leap seconds.",
             "scientists are really worried.",
@@ -251,31 +259,27 @@ class Xkcd1930:
             "there's a proposal to fix it, but it ",
             "it's getting worse and no one knows why.",
         )
-
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+        random_index = self.initiate_block(FOURTH_BLOCK_POOL)
 
         if random_index == 3:
-            up_or_down = random.randrange(4)
-            if up_or_down == 0:
-                self.statement += "Bronze Age."
-            elif up_or_down == 1:
-                self.statement += "Ice Age."
-            elif up_or_down == 2:
-                self.statement += "Cretaceous"
-            else:
-                self.statement += "1990s."
+            self.add_choice_to_statement(
+                (
+                    "Bronze Age.",
+                    "Ice Age.",
+                    "Cretaceous.",
+                    "1990s.",
+                )
+            )
 
         elif random_index == 4:
-            up_or_down = random.randrange(4)
-            if up_or_down == 0:
-                self.statement += "will never happen."
-            elif up_or_down == 1:
-                self.statement += "actually makes things worse."
-            elif up_or_down == 2:
-                self.statement += "is stalled in Congress."
-            else:
-                self.statement += "might be unconstitutional."
+            self.add_choice_to_statement(
+                (
+                    "will ever happen.",
+                    "actually makes things worse.",
+                    "is stalled in Congress.",
+                    "might be unconstitutional."
+                )
+            )
 
 
     def initiate_block(self, pool: tuple) -> int:

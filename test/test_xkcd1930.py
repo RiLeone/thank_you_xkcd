@@ -59,3 +59,12 @@ class test_Xkcd1930(ut.TestCase):
         OPTION = "Same options"
         tester.add_choice_to_statement((OPTION, OPTION))
         self.assertEqual(tester.statement, OPTION)
+
+
+    def test_initiate_block(self):
+        POOL = ("Block start ",)
+        tester = xkcd1930.Xkcd1930()
+        tester.statement = ""
+        cr = tester.initiate_block(POOL)
+        self.assertEqual(tester.statement, POOL[0])
+        self.assertEqual(cr, 0)

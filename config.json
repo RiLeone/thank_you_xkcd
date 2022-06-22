@@ -5,7 +5,7 @@
     "PLTLIB_RC": {
       "savefig": {"format": "jpg", "dpi": 300}
     },
-    "FIG_SIZE": [9, 1],
+    "FIG_SIZE": [8, 2],
     "LINE_CHAR_LENGTH": 60,
     "N_STATEMENTS": 10
   }
