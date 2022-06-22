@@ -64,15 +64,6 @@ def setup():
 
 class Xkcd1930:
     """xkcd 1930 Strip Main Class Implementation"""
-    FIRST_BLOCK_POOL = (
-        "the ",
-        "daylight ",
-        "leap ",
-        "Easter ",
-        "Toyota Truck Month ",
-        "Shark Week ",
-    )
-
     def __init__(self):
         """Instance constructor
 
@@ -128,8 +119,15 @@ class Xkcd1930:
 
     def append_first_block(self):
         """Append the first block of the sentence to the current statement"""
-        random_index = random.randrange(len(self.FIRST_BLOCK_POOL))
-        self.statement += self.FIRST_BLOCK_POOL[random_index]
+        FIRST_BLOCK_POOL = (
+            "the ",
+            "daylight ",
+            "leap ",
+            "Easter ",
+            "Toyota Truck Month ",
+            "Shark Week ",
+        )
+        random_index = self.initiate_block(FIRST_BLOCK_POOL)
 
         if random_index == 0:
             case_selector = random.randrange(4)
@@ -160,27 +158,19 @@ class Xkcd1930:
 
     def append_second_block(self):
         """Append the second block of the sentence to the current statement"""
-        block_main_parts = (
+        SECOND_BLOCK_POOL = (
             "happens ",
             "drifts out of sync with the ",
             "might ",
         )
-
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+        random_index = self.initiate_block(SECOND_BLOCK_POOL)
 
         if random_index == 0:
-            up_or_down = random.randrange(3)
-            if up_or_down == 0:
-                self.statement += "earlier "
-            elif up_or_down == 1:
-                self.statement += "later "
-            else:
-                self.statement += "at the wrong time "
-
+            self.add_choice_to_statement(("earlier ", "later ", "at the wrong time "))
             self.statement += "every year "
 
         elif random_index == 1:
+            # TODO Rework this case
             up_or_down = random.randrange(5)
             if up_or_down == 0:
                 self.statement += "sun "
@@ -189,96 +179,63 @@ class Xkcd1930:
             elif up_or_down == 2:
                 self.statement += "zodiac "
             elif up_or_down == 3:
-                yet_another_random_index = random.randrange(4)
-                if yet_another_random_index == 0:
-                    self.statement += "Gregorian "
-                elif yet_another_random_index == 1:
-                    self.statement += "Mayan "
-                elif yet_another_random_index == 2:
-                    self.statement += "Lunar "
-                else:
-                    self.statement += "iPhone "
+                self.add_choice_to_statement(
+                    ("Gregorian ", "Mayan ", "Lunar ", "iPhone ")
+                )
                 self.statement += "calendar "
+
             else:
                 self.statement += "atomic clock in Colorado "
 
         else:
-            up_or_down = random.randrange(2)
-            if up_or_down == 0:
-                self.statement += "not happen "
-            else:
-                self.statement += "happen twice "
-
+            self.add_choice_to_statement(("not happen ", "happen twice "))
             self.statement += "this year "
 
 
     def append_third_block(self):
         """Append the third block of the sentence to the current statement"""
         self.statement += "because of "
-
-        block_main_parts = (
+        THIRD_BLOCK_POOL = (
             "time zone legislation in ",
             "a decree by the Pope in the 1500s",
             "magnetic field reversal",
             "an arbitrary decision by ",
+            "the ",
         )
-
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+        random_index = self.initiate_block(THIRD_BLOCK_POOL)
 
         if random_index == 0:
-            up_or_down = random.randrange(3)
-            if up_or_down == 0:
-                self.statement += "Indiana"
-            elif up_or_down == 1:
-                self.statement += "Arizona"
-            elif up_or_down == 2:
-                self.statement += "Russia"
+            self.add_choice_to_statement(("Indiana", "Arizona", "Russia"))
 
-        elif random_index == 1 or random_index == 2:
+        elif random_index in (1, 2):
             pass
 
         elif random_index == 3:
-            up_or_down = random.randrange(3)
-            if up_or_down == 0:
-                self.statement += "Benjamin Franklin"
-            elif up_or_down == 1:
-                self.statement += "Isaac Newton"
-            elif up_or_down == 2:
-                self.statement += "FDR"
+            self.add_choice_to_statement(("Benjamin Franklin", "Isaac Newton", "FDR"))
 
         else:
-            up_or_down = random.randrange(6)
-            if up_or_down == 0:
-                self.statement += "precession "
-            elif up_or_down == 1:
-                self.statement += "libration "
-            elif up_or_down == 2:
-                self.statement += "nutation "
-            elif up_or_down == 3:
-                self.statement += "libation "
-            elif up_or_down == 4:
-                self.statement += "eccentricity "
-            else:
-                self.statement += "obliquity "
-
+            self.add_choice_to_statement(
+                (
+                    "precession ",
+                    "libration ",
+                    "nutation ",
+                    "libation ",
+                    "eccentricity ",
+                    "obliquity ",
+                )
+            )
             self.statement += "of the "
-
-            up_or_down = random.randrange(7)
-            if up_or_down == 0:
-                self.statement += "Moon"
-            elif up_or_down == 1:
-                self.statement += "Sun"
-            elif up_or_down == 2:
-                self.statement += "Earth's axis"
-            elif up_or_down == 3:
-                self.statement += "equator"
-            elif up_or_down == 4:
-                self.statement += "prime meridian"
-            elif up_or_down == 5:
-                self.statement += "International Date Line"
-            else:
-                self.statement += "Mason-Dixon Line"
+            self.add_choice_to_statement(
+                (
+                    "Moon",
+                    "Sun",
+                    "Earth's axis",
+                    "equator",
+                    "prime meridian ",
+                    "International Date Line",
+                    "Mason-Dixon Line"
+                )
+            )
 
         self.statement += "? "
 
@@ -319,6 +276,19 @@ class Xkcd1930:
                 self.statement += "is stalled in Congress."
             else:
                 self.statement += "might be unconstitutional."
+
+
+    def initiate_block(self, pool: tuple) -> int:
+        """Initiate block
+
+        Appends beginning of new block to statement and returns used random index
+
+        :param pool: Pool of options starting the block
+        :return: int. Chosen index
+        """
+        random_index = random.randrange(len(pool))
+        self.statement += pool[random_index]
+        return random_index
 
 
     def add_choice_to_statement(self, options: tuple):
