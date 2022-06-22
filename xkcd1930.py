@@ -178,22 +178,18 @@ class Xkcd1930:
             self.statement += "every year "
 
         elif random_index == 1:
-            # TODO Rework this case
-            up_or_down = random.randrange(5)
-            if up_or_down == 0:
-                self.statement += "sun "
-            elif up_or_down == 1:
-                self.statement += "moon "
-            elif up_or_down == 2:
-                self.statement += "zodiac "
-            elif up_or_down == 3:
-                self.add_choice_to_statement(
-                    ("Gregorian ", "Mayan ", "Lunar ", "iPhone ")
+            self.add_choice_to_statement(
+                (
+                    "sun ",
+                    "moon ",
+                    "zodiac ",
+                    "Gregorian calendar ",
+                    "Mayan calendar ",
+                    "Lunar calendar ",
+                    "iPhone calendar ",
+                    "atomic clock in Colorado ",
                 )
-                self.statement += "calendar "
-
-            else:
-                self.statement += "atomic clock in Colorado "
+            )
 
         else:
             self.add_choice_to_statement(("not happen ", "happen twice "))
