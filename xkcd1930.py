@@ -33,20 +33,29 @@ __version__ = "1.0.0"
 
 import json
 import logging
+import os
 import random
 
 import textwrap as textwrap
 import matplotlib.pyplot as pltlib
 
-with open("config.json", "r") as fp:
-    CFG = json.load(fp)["param"]
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level = logging.DEBUG if __debug__ else logging.INFO)
+GFG = None
+logger = None
+ROOT_LOCATION = os.path.dirname(os.path.abspath(__file__))
 
 
 def setup():
     """Setup steps"""
+    global CFG, logger
+
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(level = logging.DEBUG if __debug__ else logging.INFO)
+    logger.info("Setting-up environment... logger initialized")
+    logger.info("Loading configuration options")
+    with open("/".join([ROOT_LOCATION, "config.json"]), "r") as fp:
+        CFG = json.load(fp)["param"]
+
+    logger.info("Setting up matplotlib")
     for kk, vv in CFG["PLTLIB_RC"].items():
         pltlib.rc(kk, **vv)
 
@@ -72,15 +81,18 @@ class Xkcd1930:
         self.statement = None
 
 
-    def generate_image(self):
-        """Generate current statement image"""
+    def generate_image(self) -> bool:
+        """Generate current statement image
+
+        :return: bool. Whether image the image has been generated or not.
+        """
         if self.statement is None:
             logger.warning(
                 "Could not generate image as 'statement' is still void. "
                 "Call 'Xkcd1930.generate_statement()' at least once "
                 "before calling 'Xkcd1930.generate_image()'."
             )
-            return
+            return False
 
         logger.info(f"Generating image for statement: '{self.statement}'")
         wrapped_string = textwrap.wrap(self.statement, CFG["LINE_CHAR_LENGTH"])
@@ -95,16 +107,22 @@ class Xkcd1930:
         pltlib.savefig(
             "/".join([CFG["IMG_DIR"], "xkcd1930_calendar-facts_statement"])
         )
-        pltlib.show()
+        pltlib.close("all")
+        return True
 
 
     def generate_statement(self):
         """Generate statement and output it to the terminal"""
         self.statement = "Did you know that "
-        self.append_first_block()
-        self.get_second_block()
-        self.get_third_block()
-        self.get_fourth_block()
+        calls = (
+            self.append_first_block,
+            self.append_second_block,
+            self.append_third_block,
+            self.append_fourth_block,
+        )
+        for call in calls:
+            call()
+
         logger.info(self.statement)
 
 
@@ -116,68 +134,32 @@ class Xkcd1930:
         if random_index == 0:
             case_selector = random.randrange(4)
             if case_selector == 0:
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "fall "
-                else:
-                    self.statement += "spring "
-
+                self.add_choice_to_statement(("fall ", "spring "))
                 self.statement += "equinox "
 
             elif case_selector == 1:
                 up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "winter "
-                else:
-                    self.statement += "summer "
-
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "soltice "
-                else:
-                    self.statement += "Olympics "
+                self.add_choice_to_statement(("winter ", "summer "))
+                self.add_choice_to_statement(("solstice ", "Olympics "))
 
             elif case_selector == 2:
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "earliest "
-                else:
-                    self.statement += "latest "
-
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "sunrise "
-                else:
-                    self.statement += "sunset "
+                self.add_choice_to_statement(("earliest ", "latest "))
+                self.add_choice_to_statement(("sunrise ", "sunset "))
 
             elif case_selector == 3:
-                up_or_down = random.randrange(3)
-                if up_or_down == 0:
-                    self.statement += "harvest "
-                elif up_or_down == 1:
-                    self.statement += "super "
-                else:
-                    self.statement += "blood "
-
+                self.add_choice_to_statement(("harvest ", "super ", "blood "))
                 self.statement += "moon "
 
         elif random_index == 1:
-            up_or_down = random.randrange(2)
-            if up_or_down == 0:
-                self.statement += "saving "
-            else:
-                self.statement += "savings "
-
+            self.add_choice_to_statement(("saving ", "savings "))
             self.statement += "time "
 
         elif random_index == 2:
-            up_or_down = random.randrange(2)
-            if up_or_down == 0:
-                self.statement += "day "
-            else:
-                self.statement += "year "
+            self.add_choice_to_statement(("day ", "year "))
 
-    def get_second_block(self):
+
+    def append_second_block(self):
+        """Append the second block of the sentence to the current statement"""
         block_main_parts = (
             "happens ",
             "drifts out of sync with the ",
@@ -230,7 +212,8 @@ class Xkcd1930:
             self.statement += "this year "
 
 
-    def get_third_block(self):
+    def append_third_block(self):
+        """Append the third block of the sentence to the current statement"""
         self.statement += "because of "
 
         block_main_parts = (
@@ -299,11 +282,12 @@ class Xkcd1930:
 
         self.statement += "? "
 
-    def get_fourth_block(self):
+    def append_fourth_block(self):
+        """Append the fourth block of the sentence to the current statement"""
         self.statement += "Apparently "
 
         block_main_parts = (
-            "it causes a predictable increase in car accidents. ",
+            "it causes a predictable increase in car accidents.",
             "that's why we have leap seconds.",
             "scientists are really worried.",
             "it was even more extreme during the ",
@@ -337,20 +321,26 @@ class Xkcd1930:
                 self.statement += "might be unconstitutional."
 
 
+    def add_choice_to_statement(self, options: tuple):
+        """Add a choice to current statement
+
+        :param options: Available option for choice
+        """
+        self.statement += random.choice(options)
+
+
 def main():
     """xkcd Strip 1930 Main Function
 
-    Generate 10 random calendar facts based on the strip's schema. The last statement is saved as
-    image (JPG) in the imgs/ subdirectory.
+    Generate N_STATEMENTS random calendar facts based on the strip's schema.
+    The last statement is saved as image (JPG) in the imgs/ subdirectory.
     """
     setup()
+    statements_gen = Xkcd1930()
+    for ii in range(CFG["N_STATEMENTS"]):
+        statements_gen.generate_statement()
 
-    tester = Xkcd1930()
-    for ii in range(10):
-        tester.generate_statement()
-
-    print("\n")
-    tester.generate_image()
+    statements_gen.generate_image()
 
 
 if __name__ == "__main__":
