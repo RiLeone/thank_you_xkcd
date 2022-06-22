@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module xkcd1930</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>xkcd1930</strong></big></big> (version 1.0.0)</font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/alessandroschaer/Documents/private/code/thank_you_xkcd/xkcd1930.py">/Users/alessandroschaer/Documents/private/code/thank_you_xkcd/xkcd1930.py</a></font></td></tr></table>
+    <p><tt>xkcd&nbsp;Strip&nbsp;1930<br>
+===============<br>
+&nbsp;<br>
+<a href="http://xkcd.com/1930">http://xkcd.com/1930</a><br>
+&nbsp;<br>
+Calendar&nbsp;facts.&nbsp;Pretty&nbsp;naive&nbsp;implementation.<br>
+&nbsp;<br>
+MIT&nbsp;License<br>
+&nbsp;<br>
+Copyright&nbsp;(c)&nbsp;2017&nbsp;Alessandro&nbsp;Schaer<br>
+&nbsp;<br>
+Permission&nbsp;is&nbsp;hereby&nbsp;granted,&nbsp;free&nbsp;of&nbsp;charge,&nbsp;to&nbsp;any&nbsp;person&nbsp;obtaining&nbsp;a&nbsp;copy<br>
+of&nbsp;this&nbsp;software&nbsp;and&nbsp;associated&nbsp;documentation&nbsp;files&nbsp;(the&nbsp;"Software"),&nbsp;to&nbsp;deal<br>
+in&nbsp;the&nbsp;Software&nbsp;without&nbsp;restriction,&nbsp;including&nbsp;without&nbsp;limitation&nbsp;the&nbsp;rights<br>
+to&nbsp;use,&nbsp;copy,&nbsp;modify,&nbsp;merge,&nbsp;publish,&nbsp;distribute,&nbsp;sublicense,&nbsp;and/or&nbsp;sell<br>
+copies&nbsp;of&nbsp;the&nbsp;Software,&nbsp;and&nbsp;to&nbsp;permit&nbsp;persons&nbsp;to&nbsp;whom&nbsp;the&nbsp;Software&nbsp;is<br>
+furnished&nbsp;to&nbsp;do&nbsp;so,&nbsp;subject&nbsp;to&nbsp;the&nbsp;following&nbsp;conditions:<br>
+&nbsp;<br>
+The&nbsp;above&nbsp;copyright&nbsp;notice&nbsp;and&nbsp;this&nbsp;permission&nbsp;notice&nbsp;shall&nbsp;be&nbsp;included&nbsp;in&nbsp;all<br>
+copies&nbsp;or&nbsp;substantial&nbsp;portions&nbsp;of&nbsp;the&nbsp;Software.<br>
+&nbsp;<br>
+THE&nbsp;SOFTWARE&nbsp;IS&nbsp;PROVIDED&nbsp;"AS&nbsp;IS",&nbsp;WITHOUT&nbsp;WARRANTY&nbsp;OF&nbsp;ANY&nbsp;KIND,&nbsp;EXPRESS&nbsp;OR<br>
+IMPLIED,&nbsp;INCLUDING&nbsp;BUT&nbsp;NOT&nbsp;LIMITED&nbsp;TO&nbsp;THE&nbsp;WARRANTIES&nbsp;OF&nbsp;MERCHANTABILITY,<br>
+FITNESS&nbsp;FOR&nbsp;A&nbsp;PARTICULAR&nbsp;PURPOSE&nbsp;AND&nbsp;NONINFRINGEMENT.&nbsp;IN&nbsp;NO&nbsp;EVENT&nbsp;SHALL&nbsp;THE<br>
+AUTHORS&nbsp;OR&nbsp;COPYRIGHT&nbsp;HOLDERS&nbsp;BE&nbsp;LIABLE&nbsp;FOR&nbsp;ANY&nbsp;CLAIM,&nbsp;DAMAGES&nbsp;OR&nbsp;OTHER<br>
+LIABILITY,&nbsp;WHETHER&nbsp;IN&nbsp;AN&nbsp;ACTION&nbsp;OF&nbsp;CONTRACT,&nbsp;TORT&nbsp;OR&nbsp;OTHERWISE,&nbsp;ARISING&nbsp;FROM,<br>
+OUT&nbsp;OF&nbsp;OR&nbsp;IN&nbsp;CONNECTION&nbsp;WITH&nbsp;THE&nbsp;SOFTWARE&nbsp;OR&nbsp;THE&nbsp;USE&nbsp;OR&nbsp;OTHER&nbsp;DEALINGS&nbsp;IN&nbsp;THE<br>
+SOFTWARE.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="json.html">json</a><br>
+<a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="textwrap.html">textwrap</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="xkcd1930.html#Xkcd1930">Xkcd1930</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Xkcd1930">class <strong>Xkcd1930</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>xkcd&nbsp;1930&nbsp;Strip&nbsp;Main&nbsp;Class&nbsp;Implementation<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Xkcd1930-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Instance&nbsp;constructor<br>
+&nbsp;<br>
+Each&nbsp;instance&nbsp;is&nbsp;initialized&nbsp;with&nbsp;an&nbsp;empty&nbsp;statement</tt></dd></dl>
+
+<dl><dt><a name="Xkcd1930-append_first_block"><strong>append_first_block</strong></a>(self)</dt><dd><tt>Append&nbsp;the&nbsp;first&nbsp;block&nbsp;of&nbsp;the&nbsp;sentence&nbsp;to&nbsp;the&nbsp;current&nbsp;statement</tt></dd></dl>
+
+<dl><dt><a name="Xkcd1930-generate_image"><strong>generate_image</strong></a>(self)</dt><dd><tt>Generate&nbsp;current&nbsp;statement&nbsp;image</tt></dd></dl>
+
+<dl><dt><a name="Xkcd1930-generate_statement"><strong>generate_statement</strong></a>(self)</dt><dd><tt>Generate&nbsp;statement&nbsp;and&nbsp;output&nbsp;it&nbsp;to&nbsp;the&nbsp;terminal</tt></dd></dl>
+
+<dl><dt><a name="Xkcd1930-get_fourth_block"><strong>get_fourth_block</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Xkcd1930-get_second_block"><strong>get_second_block</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Xkcd1930-get_third_block"><strong>get_third_block</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>FIRST_BLOCK_POOL</strong> = ('the ', 'daylight ', 'leap ', 'Easter ', 'Toyota Truck Month ', 'Shark Week ')</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><tt>xkcd&nbsp;Strip&nbsp;1930&nbsp;Main&nbsp;Function<br>
+&nbsp;<br>
+Generate&nbsp;10&nbsp;random&nbsp;calendar&nbsp;facts&nbsp;based&nbsp;on&nbsp;the&nbsp;strip's&nbsp;schema.&nbsp;The&nbsp;last&nbsp;statement&nbsp;is&nbsp;saved&nbsp;as<br>
+image&nbsp;(JPG)&nbsp;in&nbsp;the&nbsp;imgs/&nbsp;subdirectory.</tt></dd></dl>
+ <dl><dt><a name="-setup"><strong>setup</strong></a>()</dt><dd><tt>Setup&nbsp;steps</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>CFG</strong> = {'FIG_SIZE': [9, 1], 'IMG_DIR': './imgs/', 'LINE_CHAR_LENGTH': 60, 'PLTLIB_RC': {'savefig': {'dpi': 300, 'format': 'jpg'}}}<br>
+<strong>fp</strong> = &lt;_io.TextIOWrapper name='config.json' mode='r' encoding='UTF-8'&gt;<br>
+<strong>logger</strong> = &lt;Logger xkcd1930 (DEBUG)&gt;</td></tr></table>
+</body></html>

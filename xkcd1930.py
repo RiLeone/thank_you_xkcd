@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-
+#! /usr/bin/env python3 -O
 """
     xkcd Strip 1930
     ===============
@@ -30,50 +29,89 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 """
+__version__ = "1.0.0"
 
+import json
+import logging
 import random
+
 import textwrap as textwrap
 import matplotlib.pyplot as pltlib
 
-class xkcd1930:
+with open("config.json", "r") as fp:
+    CFG = json.load(fp)["param"]
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level = logging.DEBUG if __debug__ else logging.INFO)
+
+
+def setup():
+    """Setup steps"""
+    for kk, vv in CFG["PLTLIB_RC"].items():
+        pltlib.rc(kk, **vv)
+
+    pltlib.xkcd()
+
+
+class Xkcd1930:
+    """xkcd 1930 Strip Main Class Implementation"""
+    FIRST_BLOCK_POOL = (
+        "the ",
+        "daylight ",
+        "leap ",
+        "Easter ",
+        "Toyota Truck Month ",
+        "Shark Week ",
+    )
+
     def __init__(self):
-        self.statement = ""
-        pltlib.xkcd()
+        """Instance constructor
+
+        Each instance is initialized with an empty statement
+        """
+        self.statement = None
+
 
     def generate_image(self):
-        self.generate_statement()
-        print("")
+        """Generate current statement image"""
+        if self.statement is None:
+            logger.warning(
+                "Could not generate image as 'statement' is still void. "
+                "Call 'Xkcd1930.generate_statement()' at least once "
+                "before calling 'Xkcd1930.generate_image()'."
+            )
+            return
 
-        wrapped_string = textwrap.wrap(self.statement, 60)
+        logger.info(f"Generating image for statement: '{self.statement}'")
+        wrapped_string = textwrap.wrap(self.statement, CFG["LINE_CHAR_LENGTH"])
 
-        fig_height = 1
-        fig = pltlib.figure(figsize=(9,fig_height))
-        for ii,line in enumerate(wrapped_string):
-            print(line)
+        fig = pltlib.figure(figsize = CFG["FIG_SIZE"])
+        fig_height = CFG["FIG_SIZE"][1]
+        for ii, line in enumerate(wrapped_string):
+            logger.debug(line)
             pltlib.text(0, 0.9 - ii * fig_height / 3, line)
 
         pltlib.axis('off')
-        pltlib.savefig("xkcd1930_calendar-facts_statement.png")
+        pltlib.savefig(
+            "/".join([CFG["IMG_DIR"], "xkcd1930_calendar-facts_statement"])
+        )
         pltlib.show()
 
+
     def generate_statement(self):
+        """Generate statement and output it to the terminal"""
         self.statement = "Did you know that "
-        self.get_first_block()
+        self.append_first_block()
         self.get_second_block()
         self.get_third_block()
         self.get_fourth_block()
-        print(self.statement)
+        logger.info(self.statement)
 
-    def get_first_block(self):
-        block_main_parts = ["the ",
-                            "daylight ",
-                            "leap ",
-                            "Easter ",
-                            "Toyota Truck Month ",
-                            "Shark Week "]
 
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+    def append_first_block(self):
+        """Append the first block of the sentence to the current statement"""
+        random_index = random.randrange(len(self.FIRST_BLOCK_POOL))
+        self.statement += self.FIRST_BLOCK_POOL[random_index]
 
         if random_index == 0:
             case_selector = random.randrange(4)
@@ -140,9 +178,11 @@ class xkcd1930:
                 self.statement += "year "
 
     def get_second_block(self):
-        block_main_parts = ["happens ",
-                            "drifts out of sync with the ",
-                            "might "]
+        block_main_parts = (
+            "happens ",
+            "drifts out of sync with the ",
+            "might ",
+        )
 
         random_index = random.randrange(len(block_main_parts))
         self.statement += block_main_parts[random_index]
@@ -193,10 +233,12 @@ class xkcd1930:
     def get_third_block(self):
         self.statement += "because of "
 
-        block_main_parts = ["time zone legislation in ",
-                            "a decree by the Pope in the 1500s",
-                            "magnetic field reversal",
-                            "an arbitrary decision by "]
+        block_main_parts = (
+            "time zone legislation in ",
+            "a decree by the Pope in the 1500s",
+            "magnetic field reversal",
+            "an arbitrary decision by ",
+        )
 
         random_index = random.randrange(len(block_main_parts))
         self.statement += block_main_parts[random_index]
@@ -260,12 +302,14 @@ class xkcd1930:
     def get_fourth_block(self):
         self.statement += "Apparently "
 
-        block_main_parts = ["it causes a predictable increase in car accidents. ",
-                            "that's why we have leap seconds.",
-                            "scientists are really worried.",
-                            "it was even more extreme during the ",
-                            "there's a proposal to fix it, but it ",
-                            "it's getting worse and no one knows why."]
+        block_main_parts = (
+            "it causes a predictable increase in car accidents. ",
+            "that's why we have leap seconds.",
+            "scientists are really worried.",
+            "it was even more extreme during the ",
+            "there's a proposal to fix it, but it ",
+            "it's getting worse and no one knows why.",
+        )
 
         random_index = random.randrange(len(block_main_parts))
         self.statement += block_main_parts[random_index]
@@ -292,11 +336,23 @@ class xkcd1930:
             else:
                 self.statement += "might be unconstitutional."
 
-if __name__ == "__main__":
-    print("\n")
-    tester = xkcd1930()
+
+def main():
+    """xkcd Strip 1930 Main Function
+
+    Generate 10 random calendar facts based on the strip's schema. The last statement is saved as
+    image (JPG) in the imgs/ subdirectory.
+    """
+    setup()
+
+    tester = Xkcd1930()
     for ii in range(10):
         tester.generate_statement()
-    print("\n")
 
+    print("\n")
     tester.generate_image()
+
+
+if __name__ == "__main__":
+    print(__doc__)
+    main()
