@@ -192,6 +192,19 @@ class test_Xkcd1930(ut.TestCase):
         )
 
 
+    def test_append_trivia_block(self):
+        possible_results = (
+            "\nWhile it may seem like trivia, it causes huge headaches for software developers.",
+            "\nWhile it may seem like trivia, it is taken advantage of by high-speed traders.",
+            "\nWhile it may seem like trivia, it triggered the 2003 Northeast Blackout.",
+            "\nWhile it may seem like trivia, it has to be corrected for by GPS satellites.",
+            "\nWhile it may seem like trivia, it is now recognized as a major cause of World War I.",
+        )
+        self.block_appending_methods_test_auxiliary_call(
+            self.tester.append_trivia_block, possible_results
+        )
+
+
     def test_add_choice_to_statement(self):
         OPTION = "Same options"
         self.tester.add_choice_to_statement((OPTION, OPTION))
