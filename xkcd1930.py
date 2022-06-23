@@ -86,9 +86,15 @@ class Xkcd1930:
             return False
 
         logger.info(f"Generating image for statement: '{self.statement}'")
-        wrapped_string = textwrap.wrap(self.statement, CFG["LINE_CHAR_LENGTH"])
-        N_LINES = len(wrapped_string)
+        wrapped_string = []
+        for line in self.statement.splitlines():
+            wrapped_string.extend(
+                textwrap.wrap(
+                    line, width = CFG["LINE_CHAR_LENGTH"], replace_whitespace = False,
+                )
+            )
 
+        N_LINES = len(wrapped_string)
         fig, axs = pltlib.subplots(figsize = CFG["FIG_SIZE"])
         LINE_SPACING = 1.
         TEXT_START_Y = 1.
@@ -118,6 +124,7 @@ class Xkcd1930:
             self.append_second_block,
             self.append_third_block,
             self.append_fourth_block,
+            self.append_trivia_block,
         )
         for call in calls:
             call()
@@ -275,6 +282,20 @@ class Xkcd1930:
                     "might be unconstitutional."
                 )
             )
+
+
+    def append_trivia_block(self):
+        """Apped the trivia block, which starts with a new line, to the current statement"""
+        self.statement += "\nWhile it may seem like trivia, it "
+        self.add_choice_to_statement(
+            (
+                "causes huge headaches for software developers.",
+                "is taken advantage of by high-speed traders.",
+                "triggered the 2003 Northeast Blackout.",
+                "has to be corrected for by GPS satellites.",
+                "is now recognized as a major cause of World War I.",
+            )
+        )
 
 
     def initiate_block(self, pool: tuple) -> int:
