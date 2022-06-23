@@ -1,4 +1,4 @@
-# XKCD Inspired Code
+# XKCD Calendar Facts
 
 Some comic strips deserve more than a simple smirk.
 
@@ -39,3 +39,24 @@ respectively.
 **Configuration** options are set in the files found in the subdirectory `config/`. In particular
 `config/config.json` can be modified to change the script's behavior. You may modify this at your
 own risk.
+
+
+## Other implementations on GitHub
+Obviously, other people were stimulated by strip 1930. Here are some other repositories/directories
+featuring implementations of the calendar-fact generator:
+* [https://github.com/lbattich/xkcd1930](https://github.com/lbattich/xkcd1930)
+* [https://github.com/Random832/xkcd1930](https://github.com/Random832/xkcd1930)
+* [https://github.com/loreilei/calendar-fact-generator](https://github.com/loreilei/calendar-fact-generator)
+* [https://github.com/iafisher/monorepo/tree/master/fun/xkcd1930](https://github.com/iafisher/monorepo/tree/master/fun/xkcd1930)
+* [https://github.com/zinniaamputastic/amputeegenerator](https://github.com/zinniaamputastic/amputeegenerator)
+* [https://github.com/kubleeka/psychic-palm-tree](https://github.com/kubleeka/psychic-palm-tree)
+* [https://github.com/notcraig/xkcd-calendar-facts-python](https://github.com/notcraig/xkcd-calendar-facts-python)
+* [https://github.com/chambln/xkcd-calendar-facts](https://github.com/chambln/xkcd-calendar-facts)
+* [https://github.com/jacobhyphenated/CalendarFacts](https://github.com/jacobhyphenated/CalendarFacts)
+* [https://github.com/yahelc/calendarfacts](https://github.com/yahelc/calendarfacts)
+* [https://github.com/mstratman/calendarfact](https://github.com/mstratman/calendarfact)
+* [https://github.com/riendeau/calendar-facts](https://github.com/riendeau/calendar-facts)
+* [https://github.com/AnAllergyToAnalogy/CalendarFacts](https://github.com/AnAllergyToAnalogy/CalendarFacts)
+* [https://github.com/notcraig/xkcd-calendar-facts-crystal](https://github.com/notcraig/xkcd-calendar-facts-crystal)
+* [https://github.com/tpetersen0308/xkcd_calendar_facts](https://github.com/tpetersen0308/xkcd_calendar_facts)
+* [https://github.com/thepatrick/xkcd-calendar-facts](https://github.com/thepatrick/xkcd-calendar-facts)
