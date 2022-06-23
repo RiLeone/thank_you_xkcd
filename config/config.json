@@ -1,0 +1,12 @@
+{
+  "description": "These are the configuration options for the thank_you_xkcd repository code.",
+  "param": {
+    "IMG_DIR": "./imgs/",
+    "PLTLIB_RC": {
+      "savefig": {"format": "jpg", "dpi": 300}
+    },
+    "FIG_SIZE": [8, 2],
+    "LINE_CHAR_LENGTH": 60,
+    "N_STATEMENTS": 10
+  }
+}

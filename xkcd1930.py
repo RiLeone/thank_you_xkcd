@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-
+#!/usr/bin/env python3 -O
 """
     xkcd Strip 1930
     ===============
@@ -30,273 +29,289 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 """
+__version__ = "1.0.0"
 
+import json
+import logging
+import os
 import random
-import textwrap as textwrap
+
+import textwrap
 import matplotlib.pyplot as pltlib
 
-class xkcd1930:
+GFG = None
+logger = None
+ROOT_LOCATION = os.path.dirname(os.path.abspath(__file__))
+
+
+def setup():
+    """Setup steps"""
+    global CFG, logger
+
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(level = logging.DEBUG if __debug__ else logging.INFO)
+    logger.info("Setting-up environment... logger initialized")
+    logger.info("Loading configuration options")
+    with open("/".join([ROOT_LOCATION, "config/config.json"]), "r") as fp:
+        CFG = json.load(fp)["param"]
+
+    logger.info("Setting up matplotlib")
+    for kk, vv in CFG["PLTLIB_RC"].items():
+        pltlib.rc(kk, **vv)
+
+    pltlib.xkcd()
+
+
+class Xkcd1930:
+    """xkcd 1930 Strip Main Class Implementation"""
     def __init__(self):
-        self.statement = ""
-        pltlib.xkcd()
+        """Instance constructor
 
-    def generate_image(self):
-        self.generate_statement()
-        print("")
+        Each instance is initialized with an empty statement
+        """
+        self.statement = None
 
-        wrapped_string = textwrap.wrap(self.statement, 60)
 
-        fig_height = 1
-        fig = pltlib.figure(figsize=(9,fig_height))
-        for ii,line in enumerate(wrapped_string):
-            print(line)
-            pltlib.text(0, 0.9 - ii * fig_height / 3, line)
+    def generate_image(self) -> bool:
+        """Generate current statement image
 
-        pltlib.axis('off')
-        pltlib.savefig("xkcd1930_calendar-facts_statement.png")
-        pltlib.show()
+        :return: bool. Whether image the image has been generated or not.
+        """
+        if self.statement is None:
+            logger.warning(
+                "Could not generate image as 'statement' is still void. "
+                "Call 'Xkcd1930.generate_statement()' at least once "
+                "before calling 'Xkcd1930.generate_image()'."
+            )
+            return False
+
+        logger.info(f"Generating image for statement: '{self.statement}'")
+        wrapped_string = textwrap.wrap(self.statement, CFG["LINE_CHAR_LENGTH"])
+        N_LINES = len(wrapped_string)
+
+        fig, axs = pltlib.subplots(figsize = CFG["FIG_SIZE"])
+        LINE_SPACING = 1.
+        TEXT_START_Y = 1.
+        for ii, line in enumerate(wrapped_string):
+            logger.debug(line)
+            axs.text(0, TEXT_START_Y - ii * LINE_SPACING, line, va = "top")
+
+        axs.set_ylim(
+            (
+                TEXT_START_Y - (N_LINES + 1) * LINE_SPACING,
+                TEXT_START_Y + LINE_SPACING,
+            )
+        )
+        axs.axis("off")
+        pltlib.savefig(
+            "/".join([CFG["IMG_DIR"], "xkcd1930_calendar-facts_statement"])
+        )
+        pltlib.close("all")
+        return True
+
 
     def generate_statement(self):
+        """Generate statement and output it to the terminal"""
         self.statement = "Did you know that "
-        self.get_first_block()
-        self.get_second_block()
-        self.get_third_block()
-        self.get_fourth_block()
-        print(self.statement)
+        calls = (
+            self.append_first_block,
+            self.append_second_block,
+            self.append_third_block,
+            self.append_fourth_block,
+        )
+        for call in calls:
+            call()
 
-    def get_first_block(self):
-        block_main_parts = ["the ",
-                            "daylight ",
-                            "leap ",
-                            "Easter ",
-                            "Toyota Truck Month ",
-                            "Shark Week "]
+        logger.info(self.statement)
 
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+
+    def append_first_block(self):
+        """Append the first block of the sentence to the current statement"""
+        FIRST_BLOCK_POOL = (
+            "the ",
+            "daylight ",
+            "leap ",
+            "Easter ",
+            "Toyota Truck Month ",
+            "Shark Week ",
+        )
+        random_index = self.initiate_block(FIRST_BLOCK_POOL)
 
         if random_index == 0:
             case_selector = random.randrange(4)
             if case_selector == 0:
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "fall "
-                else:
-                    self.statement += "spring "
-
+                self.add_choice_to_statement(("fall ", "spring "))
                 self.statement += "equinox "
 
             elif case_selector == 1:
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "winter "
-                else:
-                    self.statement += "summer "
-
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "soltice "
-                else:
-                    self.statement += "Olympics "
+                self.add_choice_to_statement(("winter ", "summer "))
+                self.add_choice_to_statement(("solstice ", "Olympics "))
 
             elif case_selector == 2:
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "earliest "
-                else:
-                    self.statement += "latest "
-
-                up_or_down = random.randrange(2)
-                if up_or_down == 0:
-                    self.statement += "sunrise "
-                else:
-                    self.statement += "sunset "
+                self.add_choice_to_statement(("earliest ", "latest "))
+                self.add_choice_to_statement(("sunrise ", "sunset "))
 
             elif case_selector == 3:
-                up_or_down = random.randrange(3)
-                if up_or_down == 0:
-                    self.statement += "harvest "
-                elif up_or_down == 1:
-                    self.statement += "super "
-                else:
-                    self.statement += "blood "
-
+                self.add_choice_to_statement(("harvest ", "super ", "blood "))
                 self.statement += "moon "
 
         elif random_index == 1:
-            up_or_down = random.randrange(2)
-            if up_or_down == 0:
-                self.statement += "saving "
-            else:
-                self.statement += "savings "
-
+            self.add_choice_to_statement(("saving ", "savings "))
             self.statement += "time "
 
         elif random_index == 2:
-            up_or_down = random.randrange(2)
-            if up_or_down == 0:
-                self.statement += "day "
-            else:
-                self.statement += "year "
+            self.add_choice_to_statement(("day ", "year "))
 
-    def get_second_block(self):
-        block_main_parts = ["happens ",
-                            "drifts out of sync with the ",
-                            "might "]
 
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+    def append_second_block(self):
+        """Append the second block of the sentence to the current statement"""
+        SECOND_BLOCK_POOL = (
+            "happens ",
+            "drifts out of sync with the ",
+            "might ",
+        )
+        random_index = self.initiate_block(SECOND_BLOCK_POOL)
 
         if random_index == 0:
-            up_or_down = random.randrange(3)
-            if up_or_down == 0:
-                self.statement += "earlier "
-            elif up_or_down == 1:
-                self.statement += "later "
-            else:
-                self.statement += "at the wrong time "
-
+            self.add_choice_to_statement(("earlier ", "later ", "at the wrong time "))
             self.statement += "every year "
 
         elif random_index == 1:
-            up_or_down = random.randrange(5)
-            if up_or_down == 0:
-                self.statement += "sun "
-            elif up_or_down == 1:
-                self.statement += "moon "
-            elif up_or_down == 2:
-                self.statement += "zodiac "
-            elif up_or_down == 3:
-                yet_another_random_index = random.randrange(4)
-                if yet_another_random_index == 0:
-                    self.statement += "Gregorian "
-                elif yet_another_random_index == 1:
-                    self.statement += "Mayan "
-                elif yet_another_random_index == 2:
-                    self.statement += "Lunar "
-                else:
-                    self.statement += "iPhone "
-                self.statement += "calendar "
-            else:
-                self.statement += "atomic clock in Colorado "
+            self.add_choice_to_statement(
+                (
+                    "sun ",
+                    "moon ",
+                    "zodiac ",
+                    "Gregorian calendar ",
+                    "Mayan calendar ",
+                    "Lunar calendar ",
+                    "iPhone calendar ",
+                    "atomic clock in Colorado ",
+                )
+            )
 
         else:
-            up_or_down = random.randrange(2)
-            if up_or_down == 0:
-                self.statement += "not happen "
-            else:
-                self.statement += "happen twice "
-
+            self.add_choice_to_statement(("not happen ", "happen twice "))
             self.statement += "this year "
 
 
-    def get_third_block(self):
+    def append_third_block(self):
+        """Append the third block of the sentence to the current statement"""
         self.statement += "because of "
-
-        block_main_parts = ["time zone legislation in ",
-                            "a decree by the Pope in the 1500s",
-                            "magnetic field reversal",
-                            "an arbitrary decision by "]
-
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+        THIRD_BLOCK_POOL = (
+            "time zone legislation in ",
+            "a decree by the Pope in the 1500s",
+            "magnetic field reversal",
+            "an arbitrary decision by ",
+            "the ",
+        )
+        random_index = self.initiate_block(THIRD_BLOCK_POOL)
 
         if random_index == 0:
-            up_or_down = random.randrange(3)
-            if up_or_down == 0:
-                self.statement += "Indiana"
-            elif up_or_down == 1:
-                self.statement += "Arizona"
-            elif up_or_down == 2:
-                self.statement += "Russia"
+            self.add_choice_to_statement(("Indiana", "Arizona", "Russia"))
 
-        elif random_index == 1 or random_index == 2:
+        elif random_index in (1, 2):
             pass
 
         elif random_index == 3:
-            up_or_down = random.randrange(3)
-            if up_or_down == 0:
-                self.statement += "Benjamin Franklin"
-            elif up_or_down == 1:
-                self.statement += "Isaac Newton"
-            elif up_or_down == 2:
-                self.statement += "FDR"
+            self.add_choice_to_statement(("Benjamin Franklin", "Isaac Newton", "FDR"))
 
         else:
-            up_or_down = random.randrange(6)
-            if up_or_down == 0:
-                self.statement += "precession "
-            elif up_or_down == 1:
-                self.statement += "libration "
-            elif up_or_down == 2:
-                self.statement += "nutation "
-            elif up_or_down == 3:
-                self.statement += "libation "
-            elif up_or_down == 4:
-                self.statement += "eccentricity "
-            else:
-                self.statement += "obliquity "
-
+            self.add_choice_to_statement(
+                (
+                    "precession ",
+                    "libration ",
+                    "nutation ",
+                    "libation ",
+                    "eccentricity ",
+                    "obliquity ",
+                )
+            )
             self.statement += "of the "
-
-            up_or_down = random.randrange(7)
-            if up_or_down == 0:
-                self.statement += "Moon"
-            elif up_or_down == 1:
-                self.statement += "Sun"
-            elif up_or_down == 2:
-                self.statement += "Earth's axis"
-            elif up_or_down == 3:
-                self.statement += "equator"
-            elif up_or_down == 4:
-                self.statement += "prime meridian"
-            elif up_or_down == 5:
-                self.statement += "International Date Line"
-            else:
-                self.statement += "Mason-Dixon Line"
+            self.add_choice_to_statement(
+                (
+                    "Moon",
+                    "Sun",
+                    "Earth's axis",
+                    "equator",
+                    "prime meridian",
+                    "International Date Line",
+                    "Mason-Dixon Line"
+                )
+            )
 
         self.statement += "? "
 
-    def get_fourth_block(self):
+    def append_fourth_block(self):
+        """Append the fourth block of the sentence to the current statement"""
         self.statement += "Apparently "
 
-        block_main_parts = ["it causes a predictable increase in car accidents. ",
-                            "that's why we have leap seconds.",
-                            "scientists are really worried.",
-                            "it was even more extreme during the ",
-                            "there's a proposal to fix it, but it ",
-                            "it's getting worse and no one knows why."]
-
-        random_index = random.randrange(len(block_main_parts))
-        self.statement += block_main_parts[random_index]
+        FOURTH_BLOCK_POOL = (
+            "it causes a predictable increase in car accidents.",
+            "that's why we have leap seconds.",
+            "scientists are really worried.",
+            "it was even more extreme during the ",
+            "there's a proposal to fix it, but it ",
+            "it's getting worse and no one knows why.",
+        )
+        random_index = self.initiate_block(FOURTH_BLOCK_POOL)
 
         if random_index == 3:
-            up_or_down = random.randrange(4)
-            if up_or_down == 0:
-                self.statement += "Bronze Age."
-            elif up_or_down == 1:
-                self.statement += "Ice Age."
-            elif up_or_down == 2:
-                self.statement += "Cretaceous"
-            else:
-                self.statement += "1990s."
+            self.add_choice_to_statement(
+                (
+                    "Bronze Age.",
+                    "Ice Age.",
+                    "Cretaceous.",
+                    "1990s.",
+                )
+            )
 
         elif random_index == 4:
-            up_or_down = random.randrange(4)
-            if up_or_down == 0:
-                self.statement += "will never happen."
-            elif up_or_down == 1:
-                self.statement += "actually makes things worse."
-            elif up_or_down == 2:
-                self.statement += "is stalled in Congress."
-            else:
-                self.statement += "might be unconstitutional."
+            self.add_choice_to_statement(
+                (
+                    "will never happen.",
+                    "actually makes things worse.",
+                    "is stalled in Congress.",
+                    "might be unconstitutional."
+                )
+            )
+
+
+    def initiate_block(self, pool: tuple) -> int:
+        """Initiate block
+
+        Appends beginning of new block to statement and returns used random index
+
+        :param pool: Pool of options starting the block
+        :return: int. Chosen index
+        """
+        random_index = random.randrange(len(pool))
+        self.statement += pool[random_index]
+        return random_index
+
+
+    def add_choice_to_statement(self, options: tuple):
+        """Add a choice to current statement
+
+        :param options: Available option for choice
+        """
+        self.statement += random.choice(options)
+
+
+def main():
+    """xkcd Strip 1930 Main Function
+
+    Generate N_STATEMENTS random calendar facts based on the strip's schema.
+    The last statement is saved as image (JPG) in the imgs/ subdirectory.
+    """
+    setup()
+    statements_gen = Xkcd1930()
+    for _ in range(CFG["N_STATEMENTS"]):
+        statements_gen.generate_statement()
+
+    statements_gen.generate_image()
+
 
 if __name__ == "__main__":
-    print("\n")
-    tester = xkcd1930()
-    for ii in range(10):
-        tester.generate_statement()
-    print("\n")
-
-    tester.generate_image()
+    print(__doc__)
+    main()
