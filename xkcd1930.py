@@ -1,4 +1,4 @@
-#! /usr/bin/env python3 -O
+#!/usr/bin/env python3 -O
 """
     xkcd Strip 1930
     ===============
@@ -52,7 +52,7 @@ def setup():
     logging.basicConfig(level = logging.DEBUG if __debug__ else logging.INFO)
     logger.info("Setting-up environment... logger initialized")
     logger.info("Loading configuration options")
-    with open("/".join([ROOT_LOCATION, "config.json"]), "r") as fp:
+    with open("/".join([ROOT_LOCATION, "config/config.json"]), "r") as fp:
         CFG = json.load(fp)["param"]
 
     logger.info("Setting up matplotlib")
@@ -235,7 +235,7 @@ class Xkcd1930:
                     "Sun",
                     "Earth's axis",
                     "equator",
-                    "prime meridian ",
+                    "prime meridian",
                     "International Date Line",
                     "Mason-Dixon Line"
                 )
@@ -270,7 +270,7 @@ class Xkcd1930:
         elif random_index == 4:
             self.add_choice_to_statement(
                 (
-                    "will ever happen.",
+                    "will never happen.",
                     "actually makes things worse.",
                     "is stalled in Congress.",
                     "might be unconstitutional."
