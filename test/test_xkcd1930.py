@@ -39,15 +39,25 @@ class test_Xkcd1930(ut.TestCase):
         self.tester.generate_statement()
         self.assertTrue(isinstance(self.tester.statement, str))
         self.assertTrue("?" in self.tester.statement)
-        self.assertTrue("." == self.tester.statement[-1])
+        self.assertTrue(self.tester.statement.endswith("."))
         self.assertTrue(self.tester.statement.startswith("Did you know that"))
 
 
     def block_appending_methods_test_auxiliary_call(
         self,
-        block_appending_method,
-        possible_results
+        block_appending_method: "method",
+        possible_results: tuple,
     ):
+        """This method performs subtests for a provided block-appending-method and a tuple of possible
+        outcomes.
+
+        Since the block-appending-methods' behavior is intrinsically random, we run the method several
+        times and verify that the generated block is among the expected outcomes. We repeat the call
+        often enough to *hope* for all options to be generated at least once (no guarantee).
+
+        :param block_appending_method: Instance block-appending-method, usually some self.tester.$method
+        :param possible_results: All possible outcomes to be expected by the block-appending-method
+        """
         for ii in range(10 * len(possible_results)):
             self.tester.statement = ""
             block_appending_method()

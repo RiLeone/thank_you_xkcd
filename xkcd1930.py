@@ -36,7 +36,7 @@ import logging
 import os
 import random
 
-import textwrap as textwrap
+import textwrap
 import matplotlib.pyplot as pltlib
 
 GFG = None
@@ -144,7 +144,6 @@ class Xkcd1930:
                 self.statement += "equinox "
 
             elif case_selector == 1:
-                up_or_down = random.randrange(2)
                 self.add_choice_to_statement(("winter ", "summer "))
                 self.add_choice_to_statement(("solstice ", "Olympics "))
 
@@ -307,7 +306,7 @@ def main():
     """
     setup()
     statements_gen = Xkcd1930()
-    for ii in range(CFG["N_STATEMENTS"]):
+    for _ in range(CFG["N_STATEMENTS"]):
         statements_gen.generate_statement()
 
     statements_gen.generate_image()
